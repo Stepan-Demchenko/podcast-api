@@ -36,23 +36,23 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.method('comparePasswords', async function(userPassword) {
+userSchema.method('comparePasswords', async function (userPassword) {
     if (this.password) {
-      try {
-        await bcrypt.compare(userPassword, this.password);
-        return true;
-      } catch (error) {
-        console.log('ERROR COMPARE PASSWORDS', error);
-        return false;
-      }
+        try {
+            const result =  await bcrypt.compare(userPassword, this.password);
+            return result;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
-  });
+});
 
-  userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     if (this.password) {
-      this.password = await bcrypt.hash(this.password, 10);
+        this.password = await bcrypt.hash(this.password, 10);
     }
     next();
-  });
+});
 
 module.exports = mongoose.model('users', userSchema);
