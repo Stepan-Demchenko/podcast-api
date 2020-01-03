@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+require('colors');
 
 const app = express();
 const authRoutes = require('./routes/auth');
@@ -10,8 +11,12 @@ const cors = require('cors');
 const middleware = require('./middleware/jwt');
 
 mongoose
-  .connect(`mongodb://localhost:27017/${process.env.DB_NAME}`)
-  .then(() => console.log('connected to DB'))
+  .connect(`mongodb://localhost:27017/${process.env.DB_NAME}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
+  .then(() => console.log('Connected to MongoDB'.cyan))
   .catch(e => console.log(e));
 
 app.use(morgan('dev'));
