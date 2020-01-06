@@ -17,16 +17,22 @@ const podcastSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  user: {
+  publisher: {
     ref: 'users',
     type: Schema.Types.ObjectId
   },
-  participants: [{
-    type: Schema.Types.ObjectId,
-    ref: 'users'
-  }],
-  categories: [{
-    type: Schema.Types.ObjectId,
-    ref: 'categories'
-  }]
+  participants: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'participants'
+    }
+  ],
+  categories: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'categories'
+    }
+  ]
 });
+
+module.exports = mongoose.model('podcasts', podcastSchema);

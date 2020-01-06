@@ -2,38 +2,43 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: false
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: false
+    },
+    surname: {
+      type: String
+    },
+    lastname: {
+      type: String
+    },
+    birthday: {
+      type: String,
+      required: false
+    },
+    about: {
+      type: String
+    },
+    email: {
+      required: true,
+      type: String,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    avatarSrc: {
+      type: String,
+      default: ''
+    }
   },
-  surname: {
-    type: String
-  },
-  lastname: {
-    type: String
-  },
-  birthday: {
-    type: String,
-    required: false
-  },
-  about: {
-    type: String
-  },
-  email: {
-    required: true,
-    type: String,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  avatarSrc: {
-    type: String,
-    default: ''
+  {
+    timestamps: true
   }
-});
+);
 
 userSchema.method('comparePasswords', async function(userPassword) {
   if (this.password) {
