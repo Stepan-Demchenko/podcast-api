@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/category.controller');
-const checkToken = require('../middleware/jwt');
+const { checkToken } = require('../middleware/jwt');
 
-router.get('/categories', controller.getAll); // get all category
-router.post('/categories', checkToken, controller.addCategory); //create
-router.delete('/categories'); //delete category
-router.patch('/categories'); //update category
+router.get('/', controller.getAll); // get all category
+router.post('/', checkToken, controller.create); //create
+router.delete('/:id', checkToken, controller.delete); //delete category
+router.patch('/:id', controller.update); //update category
 
 module.exports = router;
