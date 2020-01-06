@@ -9,16 +9,12 @@ module.exports = {
     });
 
     if (!candidate) {
-      return res.status(404).json({
-        message: 'Can`t find user'
-      });
+      return errorHandler(res, new Error('Can`t find user'), 404);
     }
     const checkPassword = await candidate.comparePasswords(req.body.password);
 
     if (!checkPassword) {
-      return res.status(403).json({
-        message: 'Invalid password'
-      });
+      return errorHandler(res, new Error('Invalid password'), 401);
     }
     const token = jwt.sign(
       {
@@ -36,9 +32,7 @@ module.exports = {
   register: async (req, res) => {
     const candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
-      return res.status(409).json({
-        message: 'User already exist'
-      });
+      return errorHandler(res, new Error('User already exist'), 401);
     }
 
     const user = new User({

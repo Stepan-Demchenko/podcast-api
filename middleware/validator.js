@@ -5,7 +5,7 @@ const validate = schema => async (req, res, next) => {
     await schema.validateAsync(req.body);
     next();
   } catch (e) {
-    errorHandler(res, e);
+    errorHandler(res, e, 422);
   }
 };
 
