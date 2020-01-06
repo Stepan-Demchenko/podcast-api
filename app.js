@@ -4,7 +4,7 @@ require('dotenv').config();
 require('colors');
 
 const app = express();
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/auth.routes');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
