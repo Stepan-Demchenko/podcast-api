@@ -24,6 +24,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/categories', require('./routes/categories.routes'));
+app.use('/api/categories', require('./routes/category.routes'));
+app.use('/api/podcasts', require('./routes/podcast.routes'));
 
 module.exports = app;

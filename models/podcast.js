@@ -24,13 +24,15 @@ const podcastSchema = new Schema({
   participants: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'participants'
+      ref: 'participants',
+      default: []
     }
   ],
   categories: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'categories'
+      ref: 'categories',
+      default: []
     }
   ]
 });
