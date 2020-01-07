@@ -2,6 +2,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const errorHandler = require('../utils/errorHandler');
 
+const { SECRET_KEY, ACCESS_TOKEN_EXP_TIME } = require('../config');
 module.exports = {
   login: async (req, res) => {
     const candidate = await User.findOne({
@@ -21,8 +22,8 @@ module.exports = {
         email: candidate.email,
         userId: candidate._id
       },
-      process.env.SECRET_KEY,
-      { expiresIn: 60 * 60 }
+      SECRET_KEY,
+      { expiresIn: ACCESS_TOKEN_EXP_TIME }
     );
     res.status(200).json({
       token: `Bearer ${token}`

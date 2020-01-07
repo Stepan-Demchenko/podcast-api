@@ -1,4 +1,5 @@
 let jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../config');
 
 const checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
@@ -13,7 +14,7 @@ const checkToken = (req, res, next) => {
   if (token.startsWith('Bearer ')) {
     token = token.slice(7, token.length);
   }
-  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.json({
         success: false,

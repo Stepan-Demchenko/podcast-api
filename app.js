@@ -1,15 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
-require('colors');
+const { DB_NAME } = require('./config');
 
+require('colors');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 mongoose
-  .connect(`mongodb://localhost:27017/${process.env.DB_NAME}`, {
+  .connect(`mongodb://localhost:27017/${DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true

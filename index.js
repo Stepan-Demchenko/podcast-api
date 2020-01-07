@@ -1,6 +1,6 @@
 const app = require('./app');
-const port = process.env.PORT || 5000;
+const { PORT } = require('./config');
 
-app.listen(port, () =>
-  console.log(`Server has been started at http://localhost:${port}`.yellow.bold)
+app.listen(PORT, () =>
+  console.log(`Server has been started at http://localhost:${PORT}`.yellow.bold)
 );
