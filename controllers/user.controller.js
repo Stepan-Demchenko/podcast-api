@@ -1,30 +1,32 @@
-const Category = require('../models/category');
+const User = require('../models/user');
 const responseHandler = require('../utils/responseHandler');
 const errorHandler = require('../utils/errorHandler');
 
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const categories = await Category.find({ user: req.user.id });
-      responseHandler(res, 200, categories);
+      const users = await Article.find({ user: req.user.id });
+
+      responseHandler(res, 200, users);
     } catch (e) {
       errorHandler(res, e);
     }
   },
-  getById: async function(req, res) {
+  getById: async (req, res) => {
     try {
-      const category = await Category.findById({ _id: req.params.id });
-      responseHandler(res, 200, category);
+      const article = await User.findById({ _id: req.params.id });
+
+      responseHandler(res, 200, article);
     } catch (e) {
       errorHandler(res, e);
     }
   },
   create: async (req, res, next) => {
     try {
-      const category = new Category(req.body);
-      const result = await category.save();
+      const user = new User(req.body);
+      const result = await user.save();
 
-      responseHandler(res, 201, result);
+      responseHandler(res, 200, result);
     } catch (e) {
       errorHandler(res, e);
     }
@@ -32,7 +34,8 @@ module.exports = {
   delete: async (req, res, next) => {
     const { id } = req.params;
     try {
-      const result = await Category.findByIdAndDelete(id);
+      const result = await User.findByIdAndDelete(id);
+
       responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
@@ -40,11 +43,12 @@ module.exports = {
   },
   update: async (req, res, next) => {
     try {
-      const category = await Category.findOneAndUpdate(
+      const user = await Article.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
         { new: true });
-      responseHandler(res, 200, category);
+
+      responseHandler(res, 200, user);
     } catch (e) {
       errorHandler(res, e);
     }

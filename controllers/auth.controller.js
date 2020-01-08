@@ -9,6 +9,7 @@ module.exports = {
       email: req.body.email
     });
 
+
     if (!candidate) {
       return errorHandler(res, new Error('Can`t find user'), 404);
     }

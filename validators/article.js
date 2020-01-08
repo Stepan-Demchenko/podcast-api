@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 
-const categorySchema = Joi.object({
-  name: Joi.string().trim().required(),
+const articleSchema = Joi.object({
+  title: Joi.string().trim().required(),
   description: Joi.string().trim().required()
 });
 

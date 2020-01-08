@@ -6,13 +6,19 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: false
+      required: true
     },
     surname: {
-      type: String
+      type: String,
+      default: null
     },
     lastname: {
-      type: String
+      type: String,
+      default:null
+    },
+    nickName: {
+      type: String,
+      required: true
     },
     birthday: {
       type: String,
