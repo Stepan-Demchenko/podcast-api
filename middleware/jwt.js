@@ -15,7 +15,7 @@ const checkToken = (req, res, next) => {
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
     if (err) {
       console.log(err);
-      return errorHandler(res, 'Token is not valid', 401);
+      return errorHandler(res, err, 401);
     } else {
       req.decoded = decoded;
       next();
