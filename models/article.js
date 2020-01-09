@@ -4,11 +4,13 @@ const Schema = mongoose.Schema;
 const articleSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    trim:true
   },
   description: {
     type: String,
-    required: true
+    required: true,
+    trim:true
   },
   imageSrc: {
     type: String,
@@ -21,3 +23,4 @@ const articleSchema = new Schema({
     }
   ]
 });
+module.exports = mongoose.model('articles', articleSchema);
