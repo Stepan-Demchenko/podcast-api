@@ -1,8 +1,8 @@
 const Joi = require('@hapi/joi');
 
 const articleSchema = Joi.object({
-  title: Joi.string().trim().required(),
-  description: Joi.string().trim().required()
+  title: Joi.string().required(),
+  description: Joi.string().required()
 });
 
-module.exports = { categorySchema };
+module.exports = { articleSchema };

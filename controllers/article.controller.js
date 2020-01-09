@@ -5,7 +5,7 @@ const errorHandler = require('../utils/errorHandler');
 module.exports = {
   getAll: async (req, res) => {
     try {
-      const articles = await Article.find({ user: req.user.id });
+      const articles = await Article.find();
       responseHandler(res, 200, articles);
     } catch (e) {
       errorHandler(res, e);

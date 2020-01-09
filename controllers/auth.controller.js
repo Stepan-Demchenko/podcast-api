@@ -48,8 +48,8 @@ module.exports = {
           email: newUser.email,
           userId: newUser._id
         },
-        process.env.SECRET_KEY,
-        { expiresIn: 60 * 60 }
+        SECRET_KEY,
+        { expiresIn: ACCESS_TOKEN_EXP_TIME}
       );
 
       res.status(201).json({

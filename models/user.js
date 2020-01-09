@@ -6,26 +6,31 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
+      trim:true
     },
     surname: {
       type: String,
-      default: null
+      default: null,
+      trim:true
     },
     lastname: {
       type: String,
-      default:null
+      default:null,
+      trim:true
     },
     nickName: {
       type: String,
-      required: true
+      required: true,
+      trim:true
     },
     birthday: {
       type: String,
       required: false
     },
     about: {
-      type: String
+      type: String,
+      trim:true
     },
     email: {
       required: true,
@@ -34,7 +39,8 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
+      trim:true
     },
     avatarSrc: {
       type: String,

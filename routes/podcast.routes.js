@@ -5,8 +5,8 @@ const controller = require('../controllers/podcast.controller');
 const { checkToken } = require('../middleware/jwt');
 
 router.get('/', controller.getAll);
-router.post('/', checkToken, controller.create);
-router.delete('/:id', checkToken, controller.delete);
-router.patch('/:id', checkToken, controller.update);
+router.post('/', controller.create);
+router.delete('/:id', controller.delete);
+router.patch('/:id', controller.update);
 
 module.exports = router;
