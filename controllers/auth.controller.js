@@ -7,7 +7,7 @@ module.exports = {
   login: async (req, res) => {
     const candidate = await User.findOne({
       email: req.body.email
-    });
+    }).select("+password");
 
 
     if (!candidate) {
