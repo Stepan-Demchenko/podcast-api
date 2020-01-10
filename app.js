@@ -28,6 +28,7 @@ app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/articles', require('./routes/article.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/podcasts', require('./routes/podcast.routes'));
+
 app.use('/api/uploads', express.static(process.cwd()+'/uploads'));
 
 module.exports = app;

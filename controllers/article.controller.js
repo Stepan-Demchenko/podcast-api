@@ -1,6 +1,7 @@
 const Article = require('../models/article');
 const responseHandler = require('../utils/responseHandler');
 const errorHandler = require('../utils/errorHandler');
+const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -21,7 +22,13 @@ module.exports = {
   },
   create: async (req, res, next) => {
     try {
-      const article = new Article(req.body);
+      const article = new Article(
+        {
+          title: req.body.title,
+          description: req.body.description,
+          imageSrc: req.files.map(img => img.path)
+        }
+      );
       const result = await article.save();
 
       responseHandler(res, 200, result);
@@ -33,7 +40,7 @@ module.exports = {
     const { id } = req.params;
     try {
       const result = await Article.findByIdAndDelete(id);
-
+      removeFileHandler(result.imageSrc);
       responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);

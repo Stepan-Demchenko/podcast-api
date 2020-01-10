@@ -12,10 +12,7 @@ const articleSchema = new Schema({
     required: true,
     trim:true
   },
-  imageSrc: {
-    type: String,
-    default: ''
-  },
+  imageSrc: [],
   categories: [
     {
       type: Schema.Types.ObjectId,
