@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-/* comment can be added either for podcast or for article */
 const commentSchema = new Schema(
   {
     content: {
@@ -9,19 +8,10 @@ const commentSchema = new Schema(
       required: true,
       trim: true
     },
-    article: {
-      ref: 'articles',
-      type: Schema.Types.ObjectId,
-      required: function() {
-        return !this.podcast;
-      }
-    },
     podcast: {
       ref: 'podcasts',
       type: Schema.Types.ObjectId,
-      required: function() {
-        return !this.article;
-      }
+      required: true
     },
     author: {
       ref: 'users',

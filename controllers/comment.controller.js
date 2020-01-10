@@ -20,9 +20,13 @@ module.exports = {
     } */
   },
   create: async (req, res, next) => {
-    console.log('req.decoded', req.decoded);
     try {
-      const comment = new Comment({ ...req.body, author: req.decoded._id });
+      const { podcastId } = req.params;
+      const comment = new Comment({
+        ...req.body,
+        author: req.decoded._id,
+        podcast: podcastId
+      });
       const result = await comment.save();
       responseHandler(res, 201, result);
     } catch (e) {

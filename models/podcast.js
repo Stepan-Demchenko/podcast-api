@@ -2,22 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const podcastSchema = new Schema({
-  url: {
-    type: String,
-    required: true
-  },
   title: {
     type: String,
     required: true,
-    trim:true
+    trim: true
   },
   description: {
     type: String,
-    trim:true
+    required: true,
+    trim: true
   },
-  date: {
-    type: Date,
-    default: Date.now
+  imageSrc: {
+    type: String,
+    default: ''
+  },
+  audioSrc: {
+    type: String,
+    required: true
   },
   publisher: {
     ref: 'users',
@@ -33,10 +34,14 @@ const podcastSchema = new Schema({
   categories: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'categories',
-      default: []
+      ref: 'categories'
+    }
+  ],
+  timelines: [
+    {
+      timeStamp: { type: String, required: true },
+      comment: { type: String, required: true }
     }
   ]
 });
-
 module.exports = mongoose.model('podcasts', podcastSchema);
