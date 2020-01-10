@@ -25,3 +25,4 @@ Thumbs.db
 /uploads
 .env
 .env.test
+.vscode
