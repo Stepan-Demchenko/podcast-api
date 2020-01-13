@@ -1,5 +1,7 @@
 const Podcast = require('../models/podcast');
+const removeFileHandler = require('../utils/removeFileHandler');
 const errorHandler = require('../utils/errorHandler');
+const responseHandler = require('../utils/responseHandler');
 
 module.exports = {
   getAll: async (req, res) => {},
@@ -24,12 +26,11 @@ module.exports = {
   },
   delete: async (req, res) => {
     const { id } = req.params;
-
     try {
       const result = await Podcast.findByIdAndDelete(id);
-      res.status(200).json({
-        _id: result._id
-      });
+      console.log('RESULT', result);
+      removeFileHandler(result.imagesSrc);
+      responseHandler(res, 200, null, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }
