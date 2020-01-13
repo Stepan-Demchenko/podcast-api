@@ -4,7 +4,13 @@ const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
 
 module.exports = {
-  getAll: async (req, res) => {},
+  getAll: async (req, res) => {
+    const podcasts = await Podcast.find({})
+      .select('title description imagesSrc publisher categories')
+      .populate('publisher categories');
+
+    responseHandler(res, 200, podcasts);
+  },
   create: async (req, res) => {
     console.log('BODY', req.body, req.files, req.decoded);
     try {
