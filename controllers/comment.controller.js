@@ -37,13 +37,8 @@ module.exports = {
   delete: async (req, res, next) => {
     const { id } = req.params;
     try {
-<<<<<<< HEAD:controllers/comment.controller.js
       const result = await Comment.findByIdAndDelete(id);
-=======
-      const result = await Article.findByIdAndDelete(id);
-      removeFileHandler(result.imageSrc);
->>>>>>> fe780de7f21912939c41ffa45e124fd4a635493c:controllers/article.controller.js
-      responseHandler(res, 200, undefined, 'Removed');
+      responseHandler(res, 200, null, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }

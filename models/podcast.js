@@ -12,7 +12,7 @@ const podcastSchema = new Schema({
     required: true,
     trim: true
   },
-  imageSrc: {
+  imagesSrc: {
     type: String,
     default: ''
   },

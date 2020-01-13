@@ -6,12 +6,12 @@ module.exports = {
   create: async (req, res) => {
     try {
       const { userId } = req.decoded;
-      console.log('BODY', req.body);
-      const podcast = new Podcast({ ...req.body, publisher: userId });
+      console.log('BODY', req.body, req.files, req.decoded);
+      /* const podcast = new Podcast({ ...req.body, publisher: userId });
       const result = await podcast.save();
       res.status(201).json({
         podcast: result
-      });
+      }); */
     } catch (e) {
       errorHandler(res, e);
     }
