@@ -4,13 +4,15 @@ const { validate } = require('../middleware/validator');
 const controller = require('../controllers/podcast.controller');
 const { checkToken } = require('../middleware/jwt');
 const imgUpload = require('../middleware/uploadImg');
+const podcastUpload = require('../middleware/uploadPodcasts');
 const { podcastSchema } = require('../validators/podcast');
 
 router.get('/', checkToken, controller.getAll);
 router.post(
   '/',
   checkToken,
-  imgUpload.array('imagesSrc', 10),
+  imgUpload.array('imagesSrc', 5),
+  // podcastUpload.single('podcast'),
   validate(podcastSchema),
   controller.create
 );

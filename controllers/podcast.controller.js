@@ -1,23 +1,24 @@
 const Podcast = require('../models/podcast');
 const errorHandler = require('../utils/errorHandler');
+const responseHandler = require('../utils/responseHandler');
+const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
-  getAll: async (req, res) => {},
+
+  getAll: async (req, res) => {
+  },
   create: async (req, res) => {
-    console.log('BODY', req.body, req.files, req.decoded);
     try {
       const { userId } = req.decoded;
-
       const podcast = new Podcast({
         title: req.body.title,
         description: req.body.description,
-        imagesSrc: req.files.map(img => img.path),
+        imagesSrc: req.files ? req.files.map(img => img.path) : null,
+        audioSrc: req.file ? req.file.path : '',
         publisher: userId
       });
       const result = await podcast.save();
-      res.status(201).json({
-        podcast: result
-      });
+      responseHandler(res, 200, result);
     } catch (e) {
       errorHandler(res, e);
     }
@@ -27,12 +28,12 @@ module.exports = {
 
     try {
       const result = await Podcast.findByIdAndDelete(id);
-      res.status(200).json({
-        _id: result._id
-      });
+      removeFileHandler(result.imagesSrc);
+      responseHandler(res, 204, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }
   },
-  update: async (req, res) => {}
+  update: async (req, res) => {
+  }
 };
