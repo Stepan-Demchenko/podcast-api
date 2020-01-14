@@ -15,9 +15,16 @@ const seedCategories = [
 module.exports = async () => {
   const docs = seedCategories.map(category => new Category(category));
   try {
-    await Category.insertMany(docs);
-    console.log('Seed categories created'.green);
+    const insert = Category.insertMany(docs);
+    await insert;
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Seed categories created'.green);
+    }
+
+    return insert;
   } catch (error) {
-    console.log('Cannot create seed categories'.red, error);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Cannot create seed categories'.red, error);
+    }
   }
 };

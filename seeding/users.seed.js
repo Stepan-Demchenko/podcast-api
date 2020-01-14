@@ -24,9 +24,15 @@ module.exports = async () => {
     user => new User({ ...user, password: bcrypt.hashSync(user.password, 10) })
   );
   try {
-    await User.insertMany(docs);
-    console.log('Seed users created'.green);
+    const insert = User.insertMany(docs);
+    await insert;
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Seed users created'.green);
+    }
+    return insert;
   } catch (error) {
-    console.log('Cannot create seed users'.red, error);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Cannot create seed users'.red, error);
+    }
   }
 };

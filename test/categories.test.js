@@ -1,92 +1,95 @@
+const { SECRET_KEY, ACCESS_TOKEN_EXP_TIME } = require('../config');
 const request = require('supertest');
 const chai = require('chai');
 const expect = chai.expect;
 const app = require('../app');
+const mongoose = require('mongoose');
 const categoriesSeedingFunction = require('../seeding/categories.seed');
+const usersSeedingFunction = require('../seeding/users.seed');
+const jwt = require('jsonwebtoken');
+require('colors');
 
-describe('Auth controller test', () => {
+let user;
+let category;
+
+const genereateToken = user => {
+  return jwt.sign(
+    {
+      email: user.email,
+      userId: user._id
+    },
+    SECRET_KEY,
+    { expiresIn: ACCESS_TOKEN_EXP_TIME }
+  );
+};
+describe('Categories controller test'.green.bold, () => {
   beforeEach(done => {
-    User.deleteMany({})
-      .exec()
+    mongoose.connection.db
+      .dropDatabase()
       .then(() => {
-        const testUser = new User({
-          name: 'test name',
-          nickName: 'testNick',
-          about: 'test about',
-          email: 'test@gmail.com',
-          password: '123123'
-        });
-
-        return testUser.save();
+        return Promise.all([
+          categoriesSeedingFunction(),
+          usersSeedingFunction()
+        ]);
+      })
+      .then(([categories, users]) => {
+        category = categories[0];
+        user = users[0];
       })
       .finally(done);
   });
 
-  it('Sign in with unexisting user gives 404 error', () => {
+  it('Returns all categories', () => {
     return request(app)
-      .post(`/api/auth/login`)
-      .send({
-        email: 'test121@gmail.com',
-        password: '123123'
-      })
-      .then(res => {
-        expect(res.status).to.eq(404);
-      });
-  });
-
-  it('Sign in with existing user returns status 200 & token', () => {
-    return request(app)
-      .post(`/api/auth/login`)
-      .send({
-        email: 'test@gmail.com',
-        password: '123123'
-      })
+      .get('/api/categories')
       .then(res => {
         expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('token');
       });
   });
 
-  it('Sign in with invalid password gives 401 error', () => {
+  it('Add category without token returns 401', () => {
     return request(app)
-      .post(`/api/auth/login`)
+      .post('/api/categories')
       .send({
-        email: 'test@gmail.com',
-        password: 'invlaid password'
+        name: 'not allowed without token',
+        description: 'description not allowed without token'
       })
       .then(res => {
         expect(res.status).to.eq(401);
       });
   });
 
-  it('Successful sign up returns token', () => {
+  it('Add category with token is successfull', () => {
     return request(app)
-      .post(`/api/auth/register`)
+      .post('/api/categories')
+      .set({ authorization: `Bearer ${genereateToken(user)}` })
       .send({
-        name: 'test name',
-        nickName: 'testNick',
-        about: 'test about',
-        email: 'test121@gmail.com',
-        password: '123123'
+        name: 'can add category name',
+        description: 'can add category description'
       })
       .then(res => {
         expect(res.status).to.eq(201);
-        expect(res.body).to.have.key('token');
+        expect(res.body.data[0]).to.include({
+          name: 'can add category name',
+          description: 'can add category description'
+        });
       });
   });
 
-  it('Using existing email returns error', () => {
+  it('Delete category without token returns 401', () => {
     return request(app)
-      .post(`/api/auth/register`)
-      .send({
-        name: 'test name',
-        nickName: 'testNick',
-        about: 'test about',
-        email: 'test@gmail.com',
-        password: '123123'
-      })
+      .delete(`/api/categories/${category._id}`)
       .then(res => {
         expect(res.status).to.eq(401);
+      });
+  });
+
+  it('Delete category with token is successfull', () => {
+    return request(app)
+      .delete(`/api/categories/${category._id}`)
+      .set({ authorization: `Bearer ${genereateToken(user)}` })
+      .then(res => {
+        expect(res.status).to.eq(200);
       });
   });
 });

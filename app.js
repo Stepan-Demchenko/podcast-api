@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { DB_NAME } = require('./config');
+const { DB_NAME, NODE_ENV } = require('./config');
 
 require('colors');
 const app = express();
@@ -17,8 +17,10 @@ mongoose
   })
   .then(() => console.log('Connected to MongoDB'.cyan))
   .catch(e => console.log('Cannot connect to MongoDB'.red));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
-app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());

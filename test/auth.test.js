@@ -1,10 +1,11 @@
+require('colors');
 const request = require('supertest');
 const chai = require('chai');
 const expect = chai.expect;
 const app = require('../app');
 const User = require('../models/user');
 
-describe('Auth controller test', () => {
+describe('Auth controller test'.green.bold, () => {
   beforeEach(done => {
     User.deleteMany({})
       .exec()
