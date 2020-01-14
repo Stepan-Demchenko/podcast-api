@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { validate } = require('../middleware/validator');
-const controller = require('../controllers/podcast.controller');
-const { checkToken } = require('../middleware/jwt');
-const imgUpload = require('../middleware/uploadImg');
-const { podcastSchema } = require('../validators/podcast');
 
-router.get('/', checkToken, controller.getAll);
+const { validate } = require('../middleware/validator');
+const controller = require('../controllers/comment.controller');
+const { checkToken } = require('../middleware/jwt');
+const { commentSchema } = require('../validators/comment');
+
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 router.post(
-  '/',
+  '/podcasts/:podcastId',
   checkToken,
-  imgUpload.array('imagesSrc', 10),
-  validate(podcastSchema),
+  validate(commentSchema),
   controller.create
 );
 router.delete('/:id', checkToken, controller.delete);
