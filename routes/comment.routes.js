@@ -4,14 +4,14 @@ const router = express.Router();
 const { validate } = require('../middleware/validator');
 const controller = require('../controllers/comment.controller');
 const { checkToken } = require('../middleware/jwt');
-const { categorySchema } = require('../validators/category');
+const { commentSchema } = require('../validators/comment');
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
 router.post(
-  '/articles/:articleId',
+  '/podcasts/:podcastId',
   checkToken,
-  validate(categorySchema),
+  validate(commentSchema),
   controller.create
 );
 router.delete('/:id', checkToken, controller.delete);

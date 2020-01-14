@@ -12,7 +12,8 @@ mongoose
   .connect(`mongodb://localhost:27017/${DB_NAME}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(() => console.log('Connected to MongoDB'.cyan))
   .catch(e => console.log('Cannot connect to MongoDB'.red));

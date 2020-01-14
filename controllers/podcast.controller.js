@@ -1,11 +1,16 @@
 const Podcast = require('../models/podcast');
+const removeFileHandler = require('../utils/removeFileHandler');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
 const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
-
   getAll: async (req, res) => {
+    const podcasts = await Podcast.find({})
+      .select('title description imagesSrc publisher categories')
+      .populate('publisher categories');
+
+    responseHandler(res, 200, podcasts);
   },
   create: async (req, res) => {
     try {
@@ -34,6 +39,5 @@ module.exports = {
       errorHandler(res, e);
     }
   },
-  update: async (req, res) => {
-  }
+  update: async (req, res) => {}
 };
