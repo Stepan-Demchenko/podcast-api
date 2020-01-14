@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new Schema(
   {
-    name: {
+    /* name: {
       type: String,
       required: true,
       trim:true
@@ -31,7 +31,7 @@ const userSchema = new Schema(
     about: {
       type: String,
       trim:true
-    },
+    }, */
     email: {
       required: true,
       type: String,
@@ -40,7 +40,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      trim:true,
+      trim: true,
       select: false
     },
     avatarSrc: {

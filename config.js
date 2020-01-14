@@ -6,6 +6,7 @@ function getPath() {
 /* TODO: find a better option for handling this */
 if (process.env.NODE_ENV !== 'production') {
   const result = require('dotenv').config({ path: getPath() });
+  console.log(`Started server in ${process.env.NODE_ENV} mode`);
   const { parsed: envs } = result;
   module.exports = envs;
 } else {
