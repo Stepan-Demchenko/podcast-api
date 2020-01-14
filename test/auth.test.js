@@ -34,7 +34,7 @@ describe('Auth controller test', () => {
       });
   });
 
-  it('Sign in with existing user gives 200 status & token', () => {
+  it('Sign in with existing user returns status 200 & token', () => {
     return request(app)
       .post(`/api/auth/login`)
       .send({
@@ -59,18 +59,34 @@ describe('Auth controller test', () => {
       });
   });
 
-  /* it('Can sign up successfully', () => {
+  it('Successful sign up returns token', () => {
     return request(app)
       .post(`/api/auth/register`)
       .send({
-        /* name: 'test name',
+        name: 'test name',
         nickName: 'testNick',
-        about: 'test about', */
+        about: 'test about',
         email: 'test121@gmail.com',
         password: '123123'
       })
       .then(res => {
-        console.log('res', res);
+        expect(res.status).to.eq(201);
+        expect(res.body).to.have.key('token');
       });
-  }); */
+  });
+
+  it('Using existing email returns error', () => {
+    return request(app)
+      .post(`/api/auth/register`)
+      .send({
+        name: 'test name',
+        nickName: 'testNick',
+        about: 'test about',
+        email: 'test@gmail.com',
+        password: '123123'
+      })
+      .then(res => {
+        expect(res.status).to.eq(401);
+      });
+  });
 });
