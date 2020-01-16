@@ -11,7 +11,7 @@ module.exports = {
       errorHandler(res, e);
     }
   },
-  getById: async function(req, res) {
+  getById: async (req, res) => {
     try {
       const category = await Category.findById({ _id: req.params.id });
       responseHandler(res, 200, category);

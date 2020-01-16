@@ -6,11 +6,19 @@ const paginateResponse = require('../middleware/paginateResult');
 
 module.exports = {
   getAll: async (req, res) => {
-    const response = await paginateResponse(req, res, Podcast);
+    const response = await paginateResponse(req, res, Podcast, 'title description imagesSrc publisher categories');
     if (response.data) {
       responseHandler(res, 200, response.data, undefined, response.meta);
     } else {
       errorHandler(res, response.message);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const podcast = await Podcast.findById({ _id: req.params.id });
+      responseHandler(res, 200, podcast);
+    } catch (e) {
+      errorHandler(res, e);
     }
   },
   create: async (req, res) => {

@@ -1,4 +1,4 @@
-module.exports = async (req, res, schema) => {
+module.exports = async (req, res, schema, select='') => {
   const page = +req.query.page || 1;
   const per_page = +req.query.per_page || 10;
   const startIndex = (page - 1) * per_page;
@@ -24,7 +24,7 @@ module.exports = async (req, res, schema) => {
       current_page: page || 1,
       total_pages: Math.ceil(total / per_page)
     };
-    results.data = await schema.find(query).limit(per_page).skip(startIndex).exec();
+    results.data = await schema.find(query).select(select).limit(per_page).skip(startIndex).exec();
     return results;
   } catch (e) {
     results.message = { message: e.message };
