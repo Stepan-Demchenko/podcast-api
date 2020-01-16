@@ -12,11 +12,13 @@ const storage = multer.diskStorage({
       fs.mkdirSync(BASE_AUDIO_PATH, { recursive: true });
       fs.mkdirSync(BASE_IMG_PATH, { recursive: true });
     }
-    if (req.files['images']) {
-      cb(null, BASE_IMG_PATH);
-    }
-    if (req.files['audio'][0]) {
+    if (file.mimetype === 'audio/mpeg') {
       cb(null, BASE_AUDIO_PATH);
+    }
+    if (file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/jpeg') {
+      cb(null, BASE_IMG_PATH);
     }
   },
   filename: function(req, file, cb) {
@@ -29,12 +31,24 @@ const storage = multer.diskStorage({
     );
   }
 });
-
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'||
+    file.mimetype === 'audio/mpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 const limits = {
   fileSize: 1024 * 1024 * 300
 };
 
 module.exports = multer({
-   storage,
-   limits
+  storage,
+  fileFilter,
+  limits
 });
