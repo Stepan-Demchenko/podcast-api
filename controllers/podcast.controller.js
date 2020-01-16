@@ -1,6 +1,7 @@
 const Podcast = require('../models/podcast');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
+const removeFileHandler = require('../utils/removeFileHandler');
 const paginateResponse = require('../middleware/paginateResult');
 
 module.exports = {

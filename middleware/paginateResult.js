@@ -20,7 +20,7 @@ module.exports = async (req, res, schema) => {
     const total = await schema.find(query).countDocuments();
     results.meta = {
       total,
-      per_page: per_page,
+      per_page,
       current_page: page || 1,
       total_pages: Math.ceil(total / per_page)
     };
