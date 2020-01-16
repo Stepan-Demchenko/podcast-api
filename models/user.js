@@ -7,22 +7,22 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
-      trim:true
+      trim: true
     },
     surname: {
       type: String,
       default: null,
-      trim:true
+      trim: true
     },
     lastname: {
       type: String,
-      default:null,
-      trim:true
+      default: null,
+      trim: true
     },
     nickName: {
       type: String,
       required: true,
-      trim:true
+      trim: true
     },
     birthday: {
       type: String,
@@ -30,7 +30,7 @@ const userSchema = new Schema(
     },
     about: {
       type: String,
-      trim:true
+      trim: true
     },
     email: {
       required: true,
@@ -40,7 +40,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      trim:true,
+      trim: true,
       select: false
     },
     avatarSrc: {
