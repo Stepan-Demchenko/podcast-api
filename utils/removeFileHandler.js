@@ -1,15 +1,11 @@
 const fs = require('fs');
 
-module.exports = (files) => {
+module.exports = function(files) {
   files = Array.isArray(files) ? files : Array(files);
+  console.log(files);
   for (const file of files) {
-    try {
-      fs.unlink(file, err => {
-        if (err) throw err;
-      });
-    } catch (e) {
-      return e;
-    }
-
+    fs.unlink(file, (err) => {
+      if (err) throw err;
+    });
   }
 };

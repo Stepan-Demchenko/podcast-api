@@ -53,7 +53,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.method('comparePasswords', async (userPassword) => {
+userSchema.method('comparePasswords', async function(userPassword) {
   if (this.password) {
     try {
       const result = await bcrypt.compare(userPassword, this.password);
@@ -65,7 +65,7 @@ userSchema.method('comparePasswords', async (userPassword) => {
   }
 });
 
-userSchema.pre('save', async (next) => {
+userSchema.pre('save', async function(next) {
   if (this.password) {
     this.password = await bcrypt.hash(this.password, 10);
   }
