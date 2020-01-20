@@ -2,13 +2,12 @@ const Podcast = require('../models/podcast');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
 const removeFileHandler = require('../utils/removeFileHandler');
-const paginateResponse = require('../middleware/paginateResult');
+const paginateResponse = require('../utils/paginateResult');
 
 module.exports = {
   getAll: async (req, res) => {
     const response = await paginateResponse(
       req,
-      res,
       Podcast,
       'title description imagesSrc publisher categories'
     );
@@ -34,7 +33,7 @@ module.exports = {
         description: req.body.description,
         imagesSrc: req.files['images']
           ? req.files['images'].map(img => img.path)
-          : null,
+          : [],
         audioSrc: req.files['audio'] ? req.files['audio'][0].path : null,
         publisher: userId
       });
@@ -47,11 +46,9 @@ module.exports = {
   delete: async (req, res) => {
     const { id } = req.params;
     try {
-      const foundPodcast = await Podcast.findByIdAndDelete(id);
-      removeFileHandler(foundPodcast.imagesSrc);
-      removeFileHandler(foundPodcast.audioSrc);
-      await Podcast.findByIdAndDelete(id);
-      responseHandler(res, 204, undefined, 'Removed');
+      const result = await Podcast.findByIdAndDelete(id);
+      removeFileHandler([...result.imagesSrc, result.audioSrc]);
+      responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }

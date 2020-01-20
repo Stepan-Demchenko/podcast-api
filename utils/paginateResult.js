@@ -1,4 +1,4 @@
-module.exports = async (req, res, schema, select='') => {
+module.exports = async (req, schema, select='') => {
   const page = +req.query.page || 1;
   const per_page = +req.query.per_page || 10;
   const startIndex = (page - 1) * per_page;
