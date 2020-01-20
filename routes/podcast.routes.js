@@ -9,6 +9,7 @@ const controller = require('../controllers/podcast.controller');
 
 
 router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 router.post(
   '/',
   checkToken,

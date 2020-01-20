@@ -1,8 +1,10 @@
 const Podcast = require('../models/podcast');
+const Rating = require('../models/rating');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
 const removeFileHandler = require('../utils/removeFileHandler');
 const paginateResponse = require('../utils/paginateResult');
+const calculateRate = require('../utils/calculateRating');
 
 module.exports = {
   getAll: async (req, res) => {
@@ -15,8 +17,9 @@ module.exports = {
   },
   getById: async (req, res) => {
     try {
-      const podcast = await Podcast.findById({ _id: req.params.id });
-      responseHandler(res, 200, podcast);
+      const podcast = await Podcast.findById(req.params.id);
+      const rate = await calculateRate(req.params.id, Rating);
+      responseHandler(res, 200, {...podcast.toObject(), ...rate});
     } catch (e) {
       errorHandler(res, e);
     }
