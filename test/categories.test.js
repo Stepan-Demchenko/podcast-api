@@ -58,7 +58,7 @@ describe('Category controller test'.green.bold, () => {
       })
       .then(res => {
         expect(res.status).to.eq(201);
-        expect(res.body.data[0]).to.include({
+        expect(res.body.data).to.include({
           name: 'can add category name',
           description: 'can add category description'
         });

@@ -29,8 +29,7 @@ module.exports = {
     try {
       const { userId } = req.decoded;
       const podcast = new Podcast({
-        title: req.body.title,
-        description: req.body.description,
+        ...req.body,
         imagesSrc: req.files['images']
           ? req.files['images'].map(img => img.path)
           : [],
@@ -38,7 +37,7 @@ module.exports = {
         publisher: userId
       });
       const result = await podcast.save();
-      responseHandler(res, 200, result);
+      responseHandler(res, 201, result);
     } catch (e) {
       errorHandler(res, e);
     }

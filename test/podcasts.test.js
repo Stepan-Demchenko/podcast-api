@@ -55,17 +55,16 @@ describe('Podcast controller test'.green.bold, () => {
       .attach('audio', './test/fixtures/test.mp3')
       .then(response => {
         /* Save this to vars to delete test files */
-        console.log('response.body.data[0]', response.body.data[0]);
-        mockAudioPath = response.body.data[0].audioSrc;
-        mockImagesPaths = response.body.data[0].imagesSrc;
-
+        console.log('response.body.data', response.body.data);
+        mockAudioPath = response.body.data.audioSrc;
+        mockImagesPaths = response.body.data.imagesSrc;
         expect(response.status).to.eq(201);
-        expect(response.body.data[0]).to.deep.include({
+        expect(response.body.data).to.deep.include({
           title: 'test title',
           description: 'test description',
           categories: [`${categories[0]._id}`, `${categories[1]._id}`]
         });
-        expect(response.body.data[0].imagesSrc.length).to.eq(1);
+        expect(response.body.data.imagesSrc.length).to.eq(1);
       });
   });
 });
