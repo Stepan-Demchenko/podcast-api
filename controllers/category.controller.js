@@ -11,7 +11,7 @@ module.exports = {
       errorHandler(res, e);
     }
   },
-  getById: async function(req, res) {
+  getById: async (req, res) => {
     try {
       const category = await Category.findById({ _id: req.params.id });
       responseHandler(res, 200, category);
@@ -23,7 +23,6 @@ module.exports = {
     try {
       const category = new Category(req.body);
       const result = await category.save();
-
       responseHandler(res, 201, result);
     } catch (e) {
       errorHandler(res, e);
@@ -43,7 +42,8 @@ module.exports = {
       const category = await Category.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
-        { new: true });
+        { new: true }
+      );
       responseHandler(res, 200, category);
     } catch (e) {
       errorHandler(res, e);

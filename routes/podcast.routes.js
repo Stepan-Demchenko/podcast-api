@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { validate } = require('../middleware/validator');
-const controller = require('../controllers/podcast.controller');
-const { checkToken } = require('../middleware/jwt');
-const imgUpload = require('../middleware/uploadImg');
-const { podcastSchema } = require('../validators/podcast');
 
-router.get('/', checkToken, controller.getAll);
+const { checkToken } = require('../middleware/jwt');
+const { validate } = require('../middleware/validator');
+const uploadMedia = require('../middleware/uploadMedia');
+const { podcastSchema } = require('../validators/podcast');
+const controller = require('../controllers/podcast.controller');
+
+
+router.get('/', controller.getAll);
 router.post(
   '/',
   checkToken,
-  imgUpload.array('imagesSrc', 10),
+  uploadMedia.fields([{ name: 'images', maxCount: 5 }, { name: 'audio', maxCount: 1 }]),
   validate(podcastSchema),
   controller.create
 );

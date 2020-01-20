@@ -1,31 +1,38 @@
 const Podcast = require('../models/podcast');
-const removeFileHandler = require('../utils/removeFileHandler');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
+const removeFileHandler = require('../utils/removeFileHandler');
+const paginateResponse = require('../utils/paginateResult');
 
 module.exports = {
   getAll: async (req, res) => {
-    const podcasts = await Podcast.find({})
-      .select('title description imagesSrc publisher categories')
-      .populate('publisher categories');
-
-    responseHandler(res, 200, podcasts);
+    const response = await paginateResponse(req, Podcast, 'title description imagesSrc publisher categories');
+    if (response.data) {
+      responseHandler(res, 200, response.data, undefined, response.meta);
+    } else {
+      errorHandler(res, response.message);
+    }
+  },
+  getById: async (req, res) => {
+    try {
+      const podcast = await Podcast.findById({ _id: req.params.id });
+      responseHandler(res, 200, podcast);
+    } catch (e) {
+      errorHandler(res, e);
+    }
   },
   create: async (req, res) => {
-    console.log('BODY', req.body, req.files, req.decoded);
     try {
       const { userId } = req.decoded;
-
       const podcast = new Podcast({
         title: req.body.title,
         description: req.body.description,
-        imagesSrc: req.files.map(img => img.path),
+        imagesSrc: req.files['images'] ? req.files['images'].map(img => img.path) : [],
+        audioSrc: req.files['audio'] ? req.files['audio'][0].path : null,
         publisher: userId
       });
       const result = await podcast.save();
-      res.status(201).json({
-        podcast: result
-      });
+      responseHandler(res, 200, result);
     } catch (e) {
       errorHandler(res, e);
     }
@@ -34,12 +41,12 @@ module.exports = {
     const { id } = req.params;
     try {
       const result = await Podcast.findByIdAndDelete(id);
-      console.log('RESULT', result);
-      removeFileHandler(result.imagesSrc);
-      responseHandler(res, 200, null, 'Removed');
+      removeFileHandler([...result.imagesSrc, result.audioSrc]);
+      responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }
   },
-  update: async (req, res) => {}
+  update: async (req, res) => {
+  }
 };

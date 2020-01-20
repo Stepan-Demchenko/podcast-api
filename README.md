@@ -23,6 +23,10 @@ rename .env-example to .env
 add your env specific information to .env file
 ```
 
+```
+npm seed -- <model name in plural> to seed the database
+```
+
 ## Running the tests
 
 Explain how to run the automated tests for this system
@@ -46,12 +50,15 @@ Give an example
 
 ## Built With
 
-- [Express](http://expressjs.com/) - The backend framework used
+- [Express](http://expressjs.com/) - The backend framework
+- [Mocha](https://mochajs.org/) - Test framework
+- [Supertest](https://github.com/visionmedia/supertest#readme) - Http testing helper
+- [Chai](https://www.chaijs.com/) - Assertion library
 
 ## Authors
 
-- **Stepan Demchenko**
-- **Alex Tarasenko**
+- **Stepan Demchenko** [Details](https://github.com/Stepan-Demchenko)
+- **Alex Tarasenko** [Details](https://github.com/tar-aldev)
 
 ## License
 

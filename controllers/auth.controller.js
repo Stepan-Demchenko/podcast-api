@@ -7,8 +7,7 @@ module.exports = {
   login: async (req, res) => {
     const candidate = await User.findOne({
       email: req.body.email
-    }).select("+password");
-
+    }).select('+password');
 
     if (!candidate) {
       return errorHandler(res, new Error('Can`t find user'), 404);
@@ -37,10 +36,7 @@ module.exports = {
       return errorHandler(res, new Error('User already exist'), 401);
     }
 
-    const user = new User({
-      email: req.body.email,
-      password: req.body.password
-    });
+    const user = new User(req.body);
     try {
       const newUser = await user.save();
       const token = jwt.sign(
@@ -49,7 +45,7 @@ module.exports = {
           userId: newUser._id
         },
         SECRET_KEY,
-        { expiresIn: ACCESS_TOKEN_EXP_TIME}
+        { expiresIn: ACCESS_TOKEN_EXP_TIME }
       );
 
       res.status(201).json({
