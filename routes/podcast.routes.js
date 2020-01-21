@@ -5,7 +5,7 @@ const { checkToken } = require('../middleware/jwt');
 const { validate } = require('../middleware/validator');
 const uploadMedia = require('../middleware/uploadMedia');
 const { podcastSchema } = require('../validators/podcast');
-const controller = require('../controllers/podcast.controller');
+const controller = require('../controllers/canal');
 
 
 router.get('/', controller.getAll);
