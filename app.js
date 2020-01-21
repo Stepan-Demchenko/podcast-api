@@ -31,6 +31,7 @@ app.use('/api/categories', require('./routes/category.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/podcasts', require('./routes/podcast.routes'));
 app.use('/api/comments', require('./routes/comment.routes'));
+app.use('/api/rate', require('./routes/rate.routes'));
 app.use('/api/uploads', express.static(process.cwd() + '/uploads'));
 
 module.exports = app;

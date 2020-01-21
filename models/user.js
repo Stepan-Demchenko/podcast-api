@@ -47,6 +47,10 @@ const userSchema = new Schema(
     avatarSrc: {
       type: String,
       default: ''
+    },
+    canal: {
+      type: Schema.Types.ObjectId,
+      ref: 'canals'
     }
   },
   {

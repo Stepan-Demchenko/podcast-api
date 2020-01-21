@@ -5,11 +5,10 @@ const { checkToken } = require('../middleware/jwt');
 const { validate } = require('../middleware/validator');
 const uploadMedia = require('../middleware/uploadMedia');
 const { podcastSchema } = require('../validators/podcast');
-const controller = require('../controllers/podcast.controller');
-const { authorize, roles } = require('../middleware/authorization');
-const Podcast = require('../models/podcast');
+const controller = require('../controllers/canal');
 
 router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 router.post(
   '/',
   checkToken,
