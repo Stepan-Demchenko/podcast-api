@@ -13,8 +13,8 @@ const ratingSchema = new Schema(
         message: 'Rate is not an integer value'
       }
     },
-    podcast: {
-      ref: 'podcasts',
+    channel: {
+      ref: 'canals',
       type: Schema.Types.ObjectId,
       required: true
     },
