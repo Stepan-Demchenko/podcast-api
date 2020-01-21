@@ -35,5 +35,4 @@ const canalSchema = new Schema({
 canalSchema.post('init', function(doc) {
   this.imageSrc = getFullImgPath('channel', doc.imageSrc);
 });
-
-module.exports = mongoose.model('canals', canalSchema);
+module.exports = mongoose.model('channels', canalSchema);

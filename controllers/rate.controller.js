@@ -7,7 +7,7 @@ module.exports = {
     const { userId } = req.decoded;
     try {
       const setRate = await Rating.findOneAndUpdate(
-        { podcast: req.body.podcast, user: userId },
+        { canal: req.body.channel, user: userId },
         { $set: req.body },
         { runValidators: true });
       if (setRate) {
