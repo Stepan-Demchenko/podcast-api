@@ -55,7 +55,6 @@ describe('Podcast controller test'.green.bold, () => {
       .attach('audio', './test/fixtures/test.mp3')
       .then(response => {
         /* Save this to vars to delete test files */
-        console.log('response.body.data', response.body.data);
         mockAudioPath = response.body.data.audioSrc;
         mockImagesPaths = response.body.data.imagesSrc;
         expect(response.status).to.eq(201);
@@ -65,6 +64,19 @@ describe('Podcast controller test'.green.bold, () => {
           categories: [`${categories[0]._id}`, `${categories[1]._id}`]
         });
         expect(response.body.data.imagesSrc.length).to.eq(1);
+      });
+  });
+  it('Add podcast without token returns 401 status', () => {
+    return request(app)
+      .post('/api/podcasts')
+      .field('title', 'test title')
+      .field('description', 'test description')
+      .field('categories[0]', `${categories[0]._id}`)
+      .field('categories[1]', `${categories[1]._id}`)
+      .attach('images', './test/fixtures/test-image.png')
+      .attach('audio', './test/fixtures/test.mp3')
+      .then(response => {
+        expect(response.status).to.eq(401);
       });
   });
 });
