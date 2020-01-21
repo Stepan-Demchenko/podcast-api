@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const { getFullImgPath } = require('../utils/getFullFilePath');
 
 const userSchema = new Schema(
   {
@@ -70,6 +71,10 @@ userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, 10);
   }
   next();
+});
+
+userSchema.post('init', function(doc) {
+  this.avatarSrc = getFullImgPath('avatar', doc.avatarSrc);
 });
 
 module.exports = mongoose.model('users', userSchema);
