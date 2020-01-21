@@ -48,13 +48,3 @@ module.exports = imgRoot => {
     limits: limits
   });
 };
-
-/* 
-"name": "test name",
-    "nickName": "testNick",
-    "about": "test about",
-	"email": "test11@gmail.com",
-	"password": "123123"
-
-
-*/

@@ -1,4 +1,4 @@
-const Canal = require('../models/canal');
+const Channel = require('../models/canal');
 const Rating = require('../models/rating');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
@@ -10,7 +10,7 @@ module.exports = {
   getAll: async (req, res) => {
     const response = await paginateResponse(
       req,
-      Canal,
+      Channel,
       'title description imageSrc categories'
     );
     if (response.data) {
@@ -30,10 +30,11 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
-      const podcast = new Podcast({
+      const { userId } = req.decoded;
+      const podcast = new Channel({
         ...req.body,
-        imagesSrc: req.file ? req.file.path : '',
-        user: req.decoded
+        imageSrc: req.file ? req.file.filename : null,
+        user: userId
       });
       const result = await podcast.save();
       responseHandler(res, 201, result);
@@ -44,7 +45,7 @@ module.exports = {
   delete: async (req, res) => {
     const { id } = req.params;
     try {
-      const result = await Canal.findByIdAndDelete(id);
+      const result = await Channel.findByIdAndDelete(id);
       removeFileHandler([...result.imageSrc]);
       responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {

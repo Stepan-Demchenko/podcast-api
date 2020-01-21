@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { getFullImgPath } = require('../utils/getFullFilePath');
 
 const canalSchema = new Schema({
   title: {
@@ -23,12 +24,16 @@ const canalSchema = new Schema({
       required: true
     }
   ],
-  user:
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'users',
-      unique: true,
-      required: true
-    }
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    unique: true,
+    required: true
+  }
 });
+
+canalSchema.post('init', function(doc) {
+  this.imageSrc = getFullImgPath('channel', doc.imageSrc);
+});
+
 module.exports = mongoose.model('canals', canalSchema);
