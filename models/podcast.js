@@ -16,8 +16,10 @@ const podcastSchema = new Schema({
     type: String,
     required: true
   },
-  canal: {
+  channel: {
     type: Schema.Types.ObjectId,
-    ref: 'canals'
+    ref: 'channels'
   }
 });
+
+module.exports = mongoose.model('podcasts', podcastSchema);

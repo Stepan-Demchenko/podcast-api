@@ -33,11 +33,14 @@ module.exports = {
     try {
       const channel = new Channel({
         ...req.body,
-        imagesSrc: req.file ? req.file.path : null,
+        imageSrc: req.file ? req.file.filename : null,
         user: userId
       });
       const result = await channel.save();
-      responseHandler(res, 200, result);
+      responseHandler(res, 200, {
+        ...result.toObject(),
+        imageSrc: req.file.path
+      });
     } catch (e) {
       errorHandler(res, e);
     }

@@ -15,7 +15,7 @@ const canalSchema = new Schema({
   },
   imageSrc: {
     type: String,
-    required: true
+    default: null
   },
   categories: [
     {
@@ -33,6 +33,7 @@ const canalSchema = new Schema({
 });
 
 canalSchema.post('init', function(doc) {
+  console.log('INIT', doc.imageSrc);
   this.imageSrc = getFullImgPath('channel', doc.imageSrc);
 });
 module.exports = mongoose.model('channels', canalSchema);
