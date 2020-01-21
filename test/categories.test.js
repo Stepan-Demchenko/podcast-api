@@ -1,4 +1,3 @@
-const { SECRET_KEY, ACCESS_TOKEN_EXP_TIME } = require('../config');
 const request = require('supertest');
 const chai = require('chai');
 const expect = chai.expect;
@@ -6,23 +5,13 @@ const app = require('../app');
 const mongoose = require('mongoose');
 const categoriesSeedingFunction = require('../seeding/categories.seed');
 const usersSeedingFunction = require('../seeding/users.seed');
-const jwt = require('jsonwebtoken');
 require('colors');
 
+const { genereateToken } = require('../utils/generateToken');
 let user;
 let category;
 
-const genereateToken = user => {
-  return jwt.sign(
-    {
-      email: user.email,
-      userId: user._id
-    },
-    SECRET_KEY,
-    { expiresIn: ACCESS_TOKEN_EXP_TIME }
-  );
-};
-describe('Categories controller test'.green.bold, () => {
+describe('Category controller test'.green.bold, () => {
   beforeEach(done => {
     mongoose.connection.db
       .dropDatabase()
@@ -69,7 +58,7 @@ describe('Categories controller test'.green.bold, () => {
       })
       .then(res => {
         expect(res.status).to.eq(201);
-        expect(res.body.data[0]).to.include({
+        expect(res.body.data).to.include({
           name: 'can add category name',
           description: 'can add category description'
         });

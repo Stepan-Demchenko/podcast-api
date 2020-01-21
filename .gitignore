@@ -26,3 +26,6 @@ Thumbs.db
 .env
 .env.test
 .vscode
+test/fixtures
+coverage
+.nyc_output

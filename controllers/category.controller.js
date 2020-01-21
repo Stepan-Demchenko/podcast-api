@@ -42,7 +42,8 @@ module.exports = {
       const category = await Category.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
-        { new: true }
+        { new: true },
+        { runValidators: true }
       );
       responseHandler(res, 200, category);
     } catch (e) {

@@ -35,8 +35,10 @@ module.exports = {
     if (candidate) {
       return errorHandler(res, new Error('User already exist'), 401);
     }
-
-    const user = new User(req.body);
+    const user = new User({
+      ...req.body,
+      avatarSrc: req.file ? req.file.filename : null
+    });
     try {
       const newUser = await user.save();
       const token = jwt.sign(

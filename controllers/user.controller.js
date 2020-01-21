@@ -21,16 +21,6 @@ module.exports = {
       errorHandler(res, e);
     }
   },
-  create: async (req, res, next) => {
-    try {
-      const user = new User(req.body);
-      const result = await user.save();
-
-      responseHandler(res, 200, result);
-    } catch (e) {
-      errorHandler(res, e);
-    }
-  },
   delete: async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -46,7 +36,8 @@ module.exports = {
       const user = await Article.findOneAndUpdate(
         { _id: req.params.id },
         { $set: req.body },
-        { new: true });
+        { new: true }
+      );
 
       responseHandler(res, 200, user);
     } catch (e) {

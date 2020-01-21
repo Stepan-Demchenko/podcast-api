@@ -8,8 +8,8 @@ const commentSchema = new Schema(
       required: true,
       trim: true
     },
-    podcast: {
-      ref: 'podcasts',
+    canal: {
+      ref: 'canals',
       type: Schema.Types.ObjectId,
       required: true
     },

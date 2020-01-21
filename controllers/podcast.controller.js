@@ -1,12 +1,16 @@
 const Podcast = require('../models/podcast');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
-const removeFileHandler = require('../utils/removeFileHandler');
 const paginateResponse = require('../utils/paginateResult');
+const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
   getAll: async (req, res) => {
-    const response = await paginateResponse(req, Podcast, 'title description imagesSrc publisher categories');
+    const response = await paginateResponse(
+      req,
+      Podcast,
+      'title description audioSrc'
+    );
     if (response.data) {
       responseHandler(res, 200, response.data, undefined, response.meta);
     } else {
@@ -15,21 +19,19 @@ module.exports = {
   },
   getById: async (req, res) => {
     try {
-      const podcast = await Podcast.findById({ _id: req.params.id });
-      responseHandler(res, 200, podcast);
+      const channel = await Podcast.findById(req.params.id);
+      responseHandler(res, 200, channel);
     } catch (e) {
       errorHandler(res, e);
     }
   },
   create: async (req, res) => {
     try {
-      const { userId } = req.decoded;
+      const { channelId } = req.params;
       const podcast = new Podcast({
-        title: req.body.title,
-        description: req.body.description,
-        imagesSrc: req.files['images'] ? req.files['images'].map(img => img.path) : [],
-        audioSrc: req.files['audio'] ? req.files['audio'][0].path : null,
-        publisher: userId
+        ...req.body,
+        audioSrc: req.file ? req.file.path : null,
+        channel: channelId
       });
       const result = await podcast.save();
       responseHandler(res, 200, result);
@@ -41,12 +43,10 @@ module.exports = {
     const { id } = req.params;
     try {
       const result = await Podcast.findByIdAndDelete(id);
-      removeFileHandler([...result.imagesSrc, result.audioSrc]);
+      removeFileHandler([...result.audioSrc]);
       responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
     }
-  },
-  update: async (req, res) => {
   }
 };
