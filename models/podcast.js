@@ -12,12 +12,20 @@ const podcastSchema = new Schema({
     required: true,
     trim: true
   },
+  imagesSrc: [
+    {
+      type: String,
+      default: []
+    }
+  ],
   audioSrc: {
     type: String,
     required: true
   },
-  canal: {
+  channel: {
     type: Schema.Types.ObjectId,
-    ref: 'canals'
+    ref: 'channels'
   }
 });
+
+module.exports = mongoose.model('podcasts', podcastSchema);

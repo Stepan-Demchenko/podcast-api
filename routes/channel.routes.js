@@ -3,17 +3,16 @@ const router = express.Router();
 
 const { checkToken } = require('../middleware/jwt');
 const { validate } = require('../middleware/validator');
-const uploadMedia = require('../middleware/uploadMedia');
+const uploadImg = require('../middleware/uploadImg');
 const { podcastSchema } = require('../validators/podcast');
 const controller = require('../controllers/channel.controller');
-
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
 router.post(
   '/',
   checkToken,
-  uploadMedia.fields([{ name: 'images', maxCount: 5 }, { name: 'audio', maxCount: 1 }]),
+  uploadImg('/channel').single('channelAvatar'),
   validate(podcastSchema),
   controller.create
 );

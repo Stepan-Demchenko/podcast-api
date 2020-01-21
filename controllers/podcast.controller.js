@@ -1,12 +1,17 @@
 const Podcast = require('../models/podcast');
 const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
+const removeFileHandler = require('../utils/removeFileHandler');
 const paginateResponse = require('../utils/paginateResult');
 const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
   getAll: async (req, res) => {
-    const response = await paginateResponse(req, Podcast, 'title description audioSrc');
+    const response = await paginateResponse(
+      req,
+      Podcast,
+      'title description audioSrc'
+    );
     if (response.data) {
       responseHandler(res, 200, response.data, undefined, response.meta);
     } else {
@@ -23,9 +28,11 @@ module.exports = {
   },
   create: async (req, res) => {
     try {
+      const { channelId } = req.params;
       const podcast = new Podcast({
         ...req.body,
-        audioSrc: req.file ? req.file.path : '',
+        audioSrc: req.file ? req.file.path : null,
+        channel: channelId
       });
       const result = await podcast.save();
       responseHandler(res, 200, result);

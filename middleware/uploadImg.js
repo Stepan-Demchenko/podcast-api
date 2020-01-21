@@ -3,58 +3,46 @@ const path = require('path');
 const fs = require('fs');
 const generateRandomString = require('../utils/generateRandomString');
 
-const BASE_PATH = 'uploads';
-let uploadFilesFolder = 'img';
+module.exports = (imgRoot = 'avatar') => {
+  const BASE_PATH = 'uploads';
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    if (!fs.existsSync(BASE_PATH + '/' + uploadFilesFolder)) {
-      fs.mkdirSync(BASE_PATH + '/' + uploadFilesFolder, { recursive: true });
+  const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      if (!fs.existsSync(BASE_PATH + '/' + imgRoot)) {
+        fs.mkdirSync(BASE_PATH + '/' + imgRoot, { recursive: true });
+      }
+      cb(null, BASE_PATH + '/' + imgRoot);
+    },
+    filename: function(req, file, cb) {
+      cb(
+        null,
+        generateRandomString() +
+          '-' +
+          Date.now() +
+          path.extname(file.originalname)
+      );
     }
-    cb(null, BASE_PATH + '/' + uploadFilesFolder);
-  },
-  filename: function(req, file, cb) {
-    cb(
-      null,
-      generateRandomString() +
-        '-' +
-        Date.now() +
-        path.extname(file.originalname)
-    );
-  }
-});
+  });
 
-const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === 'image/png' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/jpeg'
-  ) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
+  const fileFilter = (req, file, cb) => {
+    if (
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/jpeg'
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  };
 
-const limits = {
-  fileSize: 1024 * 1024 * 5
-};
+  const limits = {
+    fileSize: 1024 * 1024 * 5
+  };
 
-module.exports = imgRoot => {
-  uploadFilesFolder = imgRoot;
   return multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: limits
   });
 };
-
-/* 
-"name": "test name",
-    "nickName": "testNick",
-    "about": "test about",
-	"email": "test11@gmail.com",
-	"password": "123123"
-
-
-*/
