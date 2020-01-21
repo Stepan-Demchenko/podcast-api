@@ -3,14 +3,15 @@ const path = require('path');
 const fs = require('fs');
 const generateRandomString = require('../utils/generateRandomString');
 
-const BASE_IMG_PATH = 'uploads/img';
+const BASE_PATH = 'uploads';
+let uploadFilesFolder = 'img';
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    if (!fs.existsSync(BASE_IMG_PATH)) {
-      fs.mkdirSync(BASE_IMG_PATH, { recursive: true });
+    if (!fs.existsSync(BASE_PATH + '/' + uploadFilesFolder)) {
+      fs.mkdirSync(BASE_PATH + '/' + uploadFilesFolder, { recursive: true });
     }
-    cb(null, BASE_IMG_PATH);
+    cb(null, BASE_PATH + '/' + uploadFilesFolder);
   },
   filename: function(req, file, cb) {
     cb(
@@ -39,8 +40,21 @@ const limits = {
   fileSize: 1024 * 1024 * 5
 };
 
-module.exports = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: limits
-});
+module.exports = imgRoot => {
+  uploadFilesFolder = imgRoot;
+  return multer({
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: limits
+  });
+};
+
+/* 
+"name": "test name",
+    "nickName": "testNick",
+    "about": "test about",
+	"email": "test11@gmail.com",
+	"password": "123123"
+
+
+*/
