@@ -43,7 +43,7 @@ module.exports = {
     const { id } = req.params;
     try {
       const result = await Podcast.findByIdAndDelete(id);
-      removeFileHandler([...result.audioSrc]);
+      removeFileHandler(result.audioSrc);
       responseHandler(res, 200, undefined, 'Removed');
     } catch (e) {
       errorHandler(res, e);
