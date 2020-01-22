@@ -12,5 +12,5 @@ router.post(
   validate(registerSchema),
   controller.register
 );
-
+router.post('/token/refresh', controller.refreshToken);
 module.exports = router;
