@@ -3,7 +3,6 @@ const errorHandler = require('../utils/errorHandler');
 const responseHandler = require('../utils/responseHandler');
 const removeFileHandler = require('../utils/removeFileHandler');
 const paginateResponse = require('../utils/paginateResult');
-const removeFileHandler = require('../utils/removeFileHandler');
 
 module.exports = {
   getAll: async (req, res) => {

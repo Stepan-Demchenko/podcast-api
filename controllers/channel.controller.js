@@ -21,7 +21,9 @@ module.exports = {
   },
   getById: async (req, res) => {
     try {
-      const channel = await Channel.findById(req.params.id);
+      const channel = await Channel.findById(req.params.id).populate({
+        path: 'categories podcasts'
+      });
       const rate = await summaryOfRate(req.params.id, Rating);
       responseHandler(res, 200, { ...channel.toObject(), ...rate });
     } catch (e) {
