@@ -38,7 +38,7 @@ module.exports = (audioRoot = 'podcasts') => {
 
   return multer({
     storage: storage,
-    fileFilter: fileFilter,
+    fileFilter,
     limits
   });
 };

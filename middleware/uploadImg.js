@@ -25,6 +25,7 @@ module.exports = (imgRoot = 'avatar') => {
   });
 
   const fileFilter = (req, file, cb) => {
+    console.log('REQ BODY', req.body);
     if (
       file.mimetype === 'image/png' ||
       file.mimetype === 'image/jpg' ||
@@ -41,8 +42,8 @@ module.exports = (imgRoot = 'avatar') => {
   };
 
   return multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: limits
+    storage,
+    fileFilter,
+    limits
   });
 };
