@@ -4,11 +4,14 @@ const chai = require('chai');
 const expect = chai.expect;
 const app = require('../app');
 const User = require('../models/user');
+const RefreshToken = require('../models/refreshToken');
 
 describe('Auth controller test'.green.bold, () => {
   beforeEach(done => {
-    User.deleteMany({})
-      .exec()
+    Promise.all([
+      User.deleteMany({}).exec(),
+      RefreshToken.deleteMany({}).exec()
+    ])
       .then(() => {
         const testUser = new User({
           name: 'test name',
@@ -44,7 +47,8 @@ describe('Auth controller test'.green.bold, () => {
       })
       .then(res => {
         expect(res.status).to.eq(200);
-        expect(res.body).to.have.property('token');
+        expect(res.body.data).to.have.property('accessToken');
+        expect(res.body.data).to.have.property('refreshToken');
       });
   });
 
@@ -72,7 +76,8 @@ describe('Auth controller test'.green.bold, () => {
       })
       .then(res => {
         expect(res.status).to.eq(201);
-        expect(res.body).to.have.key('token');
+        expect(res.body.data).to.have.property('accessToken');
+        expect(res.body.data).to.have.property('refreshToken');
       });
   });
 
@@ -88,6 +93,25 @@ describe('Auth controller test'.green.bold, () => {
       })
       .then(res => {
         expect(res.status).to.eq(401);
+      });
+  });
+
+  it('Can refresh token successfully', () => {
+    return request(app)
+      .post(`/api/auth/login`)
+      .send({
+        email: 'test@gmail.com',
+        password: '123123'
+      })
+      .then(res => {
+        return request(app)
+          .post(`/api/auth/token/refresh`)
+          .send({ refreshToken: res.body.data.refreshToken });
+      })
+      .then(res => {
+        expect(res.status).to.eq(200);
+        expect(res.body.data).to.have.property('accessToken');
+        expect(res.body.data).to.have.property('refreshToken');
       });
   });
 });

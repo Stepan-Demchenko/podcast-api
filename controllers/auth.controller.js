@@ -28,7 +28,7 @@ module.exports = {
 
     try {
       await refreshTokenForDb.save();
-      res.status(200).json({
+      responseHandler(res, 200, {
         accessToken,
         refreshToken
       });
@@ -61,9 +61,9 @@ module.exports = {
     if (!foundToken) {
       return responseHandler(res, 403, null, 'Invalid refresh token');
     }
+
     /* Find user associated with the token */
     const associatedUser = await User.findById(foundToken.userId);
-
     /* Generate new token pair */
     const newTokensPair = generateTokens(associatedUser);
 
